@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getLivros } from "../../servicos/livros";
+import { postFavorito } from "../../servicos/favoritos";
 
 const PesquisaContainer = styled.section`
     background-image: linear-gradient(90deg, #002F52 35%, #326589 165%);
@@ -54,6 +55,12 @@ function Pesquisa() {
         setLivros(livrosDaApi);
     }
 
+    async function insereFavorito(id){
+        await postFavorito(id);
+        alert('Livro adicionado aos favoritos!');
+    }
+
+
     return (
         <PesquisaContainer>
             <Titulo>Já sabe por onde começar?</Titulo>
@@ -67,7 +74,7 @@ function Pesquisa() {
                 }}
             />
         {livrosPesquisados.map( livro => (
-            <Resultado>
+            <Resultado onClick={()=> insereFavorito(livro.id)}>
                 <p>{livro.nome}</p>
                 <img src={livro.src}/>
             </Resultado>
